@@ -55,6 +55,18 @@ export class Store {
         this._save();
     }
 
+    addTopic(topic) {
+        const newTopic = {
+            id: 'topic-' + Date.now(),
+            createdAt: new Date().toISOString(),
+            ...topic
+        };
+        this.data.topics.unshift(newTopic); // Add to the beginning
+        this.data.activeTopicId = newTopic.id;
+        this._save();
+        return newTopic;
+    }
+
     getComments(topicId) {
         return this.data.comments.filter(c => c.topicId === topicId);
     }

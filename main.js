@@ -139,16 +139,20 @@ class App {
         // 1. AI Persona Cards (Main Opinions)
         const mainAIComments = allComments.filter(c => c.type === 'ai' && !c.replyTo);
         personaGrid.innerHTML = '';
-        mainAIComments.forEach(comment => {
-            const persona = Object.values(PERSONAS).find(p => p.id === comment.personaId);
-            const card = document.createElement('persona-card');
-            card.setAttribute('name', comment.name);
-            card.setAttribute('title', persona?.role || 'Expert');
-            card.setAttribute('icon', persona?.icon || '🤖');
-            card.setAttribute('sentiment', persona?.sentiment || 'Neutral');
-            card.setAttribute('content', comment.content);
-            personaGrid.appendChild(card);
-        });
+        if (mainAIComments.length === 0) {
+            personaGrid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--text-secondary);">AI 페르소나들이 의견을 준비하고 있습니다...</p>';
+        } else {
+            mainAIComments.forEach(comment => {
+                const persona = Object.values(PERSONAS).find(p => p.id === comment.personaId);
+                const card = document.createElement('persona-card');
+                card.setAttribute('name', comment.name);
+                card.setAttribute('title', persona?.role || 'Expert');
+                card.setAttribute('icon', persona?.icon || '🤖');
+                card.setAttribute('sentiment', persona?.sentiment || 'Neutral');
+                card.setAttribute('content', comment.content);
+                personaGrid.appendChild(card);
+            });
+        }
 
         // 2. Comments Area (Replies and Human Comments)
         const otherComments = allComments.filter(c => c.type === 'user' || c.replyTo);
@@ -174,6 +178,52 @@ class App {
     }
 
     setupEventListeners() {
+        // Topic submission
+        const btnShowForm = document.getElementById('btn-show-topic-form');
+        const btnCancelForm = document.getElementById('btn-cancel-topic');
+        const btnSubmitTopic = document.getElementById('btn-submit-topic');
+        const topicForm = document.getElementById('new-topic-form');
+        const titleInput = document.getElementById('topic-title-input');
+        const contentInput = document.getElementById('topic-content-input');
+
+        if (btnShowForm) {
+            btnShowForm.addEventListener('click', () => {
+                topicForm.style.display = 'block';
+                btnShowForm.style.display = 'none';
+            });
+        }
+
+        if (btnCancelForm) {
+            btnCancelForm.addEventListener('click', () => {
+                topicForm.style.display = 'none';
+                btnShowForm.style.display = 'inline-block';
+            });
+        }
+
+        if (btnSubmitTopic) {
+            btnSubmitTopic.addEventListener('click', () => {
+                const title = titleInput.value.trim();
+                const content = contentInput.value.trim();
+
+                if (title && content) {
+                    const newTopic = store.addTopic({
+                        title,
+                        content,
+                        category: '사용자 주제'
+                    });
+                    
+                    titleInput.value = '';
+                    contentInput.value = '';
+                    topicForm.style.display = 'none';
+                    btnShowForm.style.display = 'inline-block';
+                    
+                    this.renderActiveTopic();
+                    runAIDebate(newTopic.id);
+                }
+            });
+        }
+
+        // Comment submission
         const submitBtn = document.getElementById('submit-comment');
         const textarea = document.getElementById('user-comment-input');
 
