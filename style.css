@@ -1,1 +1,286 @@
-/* Add styles here */
+:root {
+    /* Modern Color Palette using OKLCH */
+    --brand-primary: oklch(65% 0.2 250); /* Vibrant Blue */
+    --brand-secondary: oklch(70% 0.15 150); /* Teal-ish */
+    --accent-vibrant: oklch(75% 0.2 300); /* Purple/Cyan accent */
+    
+    --bg-main: oklch(98% 0.01 250);
+    --bg-card: oklch(100% 0 0);
+    --text-primary: oklch(25% 0.02 250);
+    --text-secondary: oklch(50% 0.02 250);
+    
+    --shadow-soft: 0 10px 30px -5px rgba(0, 0, 0, 0.05), 0 5px 15px -3px rgba(0, 0, 0, 0.02);
+    --shadow-lifted: 0 20px 40px -10px rgba(0, 0, 0, 0.1), 0 10px 20px -5px rgba(0, 0, 0, 0.05);
+    
+    --radius-lg: 16px;
+    --radius-md: 12px;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background-color: var(--bg-main);
+    color: var(--text-primary);
+    line-height: 1.6;
+    margin: 0;
+    min-height: 100vh;
+    position: relative;
+}
+
+/* Noise Overlay Effect */
+.noise-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    pointer-events: none;
+    opacity: 0.03;
+    z-index: 9999;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
+/* Header Styles */
+.main-header {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid oklch(90% 0.01 250);
+    padding: 16px 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.main-header .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.logo {
+    font-size: 1.8rem;
+    font-weight: 900;
+    letter-spacing: -1px;
+    margin: 0;
+    background: linear-gradient(135deg, var(--brand-primary), var(--accent-vibrant));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.tagline {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin: 0 0 0 12px;
+    padding-left: 12px;
+    border-left: 1px solid oklch(90% 0.01 250);
+}
+
+.main-nav {
+    display: flex;
+    gap: 12px;
+}
+
+/* Layout Grid */
+.app-layout {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 32px;
+    padding-top: 40px;
+    padding-bottom: 80px;
+}
+
+@media (max-width: 900px) {
+    .app-layout {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Sidebar Styles */
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
+.section-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 16px;
+    color: var(--text-primary);
+}
+
+.topic-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.topic-card {
+    background: var(--bg-card);
+    padding: 20px;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-soft);
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid transparent;
+}
+
+.topic-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lifted);
+    border-color: var(--brand-primary);
+}
+
+.topic-card.active {
+    background: var(--brand-primary);
+    color: white;
+}
+
+.topic-card .category {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    font-weight: 700;
+    opacity: 0.8;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.topic-card h3 {
+    font-size: 1rem;
+    margin: 0 0 12px 0;
+    line-height: 1.4;
+}
+
+.topic-stats {
+    font-size: 0.85rem;
+    display: flex;
+    gap: 12px;
+    opacity: 0.9;
+}
+
+/* Main Discussion Area */
+.discussion-content {
+    background: var(--bg-card);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-soft);
+    padding: 40px;
+}
+
+.discussion-header {
+    margin-bottom: 40px;
+    border-bottom: 1px solid oklch(95% 0.01 250);
+    padding-bottom: 32px;
+}
+
+.breadcrumb {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin-bottom: 12px;
+}
+
+.discussion-title {
+    font-size: 2.5rem;
+    font-weight: 900;
+    margin: 0 0 16px 0;
+    letter-spacing: -1.5px;
+}
+
+.discussion-desc {
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+    max-width: 800px;
+}
+
+.sub-title {
+    font-size: 1.5rem;
+    font-weight: 800;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Persona Grid */
+.persona-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    margin-bottom: 60px;
+}
+
+/* Human Interaction Area */
+.user-comment-form {
+    background: oklch(96% 0.01 250);
+    padding: 24px;
+    border-radius: var(--radius-md);
+    margin-bottom: 40px;
+}
+
+.user-comment-form textarea {
+    width: 100%;
+    height: 120px;
+    background: white;
+    border: 1px solid oklch(90% 0.01 250);
+    border-radius: var(--radius-md);
+    padding: 16px;
+    font-size: 1rem;
+    font-family: inherit;
+    resize: none;
+    margin-bottom: 16px;
+}
+
+.form-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.form-footer .info {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+/* Common Components */
+.btn-primary {
+    background: var(--brand-primary);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 30px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.2s, filter 0.2s;
+}
+
+.btn-primary:hover {
+    filter: brightness(1.1);
+    transform: scale(1.02);
+}
+
+.btn-icon {
+    background: transparent;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 50%;
+}
+
+.btn-icon:hover {
+    background: oklch(95% 0.01 250);
+}
+
+/* Footer */
+.main-footer {
+    text-align: center;
+    padding: 40px 0;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    border-top: 1px solid oklch(95% 0.01 250);
+}
